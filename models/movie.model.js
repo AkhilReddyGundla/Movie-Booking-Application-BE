@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
 const movieSchema = new Schema({
-    tile: {
+    title: {
         type: String,
         required: true,
     },
@@ -32,7 +32,7 @@ const movieSchema = new Schema({
     },
     jorneral : {
         type: String,
-        required: String,
+        required: true,
     },
     director: {
         type: String,
@@ -43,7 +43,7 @@ const movieSchema = new Schema({
         required : true,
         default : false,
     },
-},{timeseries: true});
+}, { timestamps: true });
 
 
 
