@@ -1,5 +1,11 @@
 const Movie = require("../models/movie.model");
 
+
+const createNewMovie = async(movieInfo) =>{
+    const movie = await Movie.create(movieInfo);
+    return movie;
+}
+
 const getMovieById = async (movieId) => {
     const movie = await Movie.findById(movieId);
     if(!movie){
@@ -16,6 +22,13 @@ const getMovieById = async (movieId) => {
     };
 }
 
+const deleteSingleMovie = async(movieId)=>{
+    const response = await Movie.findByIdAndDelete(movieId);
+    return response;
+}
+
 module.exports = {
+    createNewMovie,
     getMovieById,
+    deleteSingleMovie,
 }
