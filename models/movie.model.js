@@ -6,6 +6,7 @@ const movieSchema = new Schema({
     title: {
         type: String,
         required: true,
+        minLength: 2,
     },
     description: {
         type: String,

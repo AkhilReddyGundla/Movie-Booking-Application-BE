@@ -2,8 +2,17 @@ const Movie = require("../models/movie.model");
 
 
 const createNewMovie = async(movieInfo) =>{
-    const movie = await Movie.create(movieInfo);
-    return movie;
+   try {
+     const movie = await Movie.create(movieInfo);
+     return movie;
+     
+   } catch (error) {
+        return {
+            error,
+            data: "",
+            statusCode: 406, 
+        }
+   }
 }
 
 const getMovieById = async (movieId) => {
@@ -27,8 +36,26 @@ const deleteSingleMovie = async(movieId)=>{
     return response;
 }
 
+const updateSelectedMovie = async(movieId, content)=>{
+    try {
+        const response = await Movie.findByIdAndUpdate(movieId, content, {new: true, runValidators: true});
+        return response;
+    } catch (error) {
+        if(error.name == 'ValidationError'){
+            let err = {};
+            Object.keys(error.errors).forEach((key)=>{
+                err[ket] = error.errors[key].message;
+            });
+            return {err, code: 422};
+        }else {
+            throw error;
+        }
+    }
+}
+
 module.exports = {
     createNewMovie,
     getMovieById,
     deleteSingleMovie,
+    updateSelectedMovie,
 }

@@ -1,23 +1,16 @@
-const Movie = require("../models/movie.model");
-const { createNewMovie, getMovieById, deleteSingleMovie } = require("../services/movies.services");
+const { createNewMovie, getMovieById, deleteSingleMovie, updateSelectedMovie } = require("../services/movies.services");
 const { successResponseBody, errorResponseBody } = require("../utils/responseBody");
 
 const createMovie = async(req,res) =>{
     try {
-        const movie = await createNewMovie(req.body);
-        return res.status(201).json({
-            success: true,
-            error: {},
-            data: movie,
-            message: 'Successfully created a new movie',
-        })
+        const response = await createNewMovie(req.body);
+        successResponseBody.data = response.data;
+        successResponseBody.message = 'Successfully created a new movie';
+        return res.status(201).json(successResponseBody);
     } catch (error) {
-        return res.status(500).json({
-            success: false,
-            error,
-            data:{},
-            message: 'Sonething went wrong',
-        });        
+        errorResponseBody.message = 'Something went wrong';
+        errorResponseBody.error = error;
+        return res.status(500).json(errorResponseBody);        
     }
 }
 
@@ -57,8 +50,24 @@ const deleteMovie = async(req,res) =>{
     }
 }
 
+const updateMovie = async(req,res)=>{
+   try {
+    const content = req.body;
+    const movieId = req.params.movieId;
+    const response = await updateSelectedMovie(movieId, content);
+    successResponseBody.data = response.data;
+    successResponseBody.message = 'Updated movie';
+    return res.status(200).json(successResponseBody);
+   } catch (error) {
+    errorResponseBody.error = error;
+    errorResponseBody.message = 'Unable to update movie details';
+    return res.status(500).json(errorResponseBody);
+   }
+}
+
 module.exports = {
     createMovie,
     deleteMovie,
     getMovie,
+    updateMovie,
 };
