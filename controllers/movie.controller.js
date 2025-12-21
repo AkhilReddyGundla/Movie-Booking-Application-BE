@@ -1,4 +1,5 @@
-const { createNewMovie, getMovieById, deleteSingleMovie, updateSelectedMovie } = require("../services/movies.services");
+const { response } = require("express");
+const { createNewMovie, getMovieById, deleteSingleMovie, updateSelectedMovie, fetchMovies } = require("../services/movies.services");
 const { successResponseBody, errorResponseBody } = require("../utils/responseBody");
 
 const createMovie = async(req,res) =>{
@@ -65,9 +66,24 @@ const updateMovie = async(req,res)=>{
    }
 }
 
+
+const getMovies = async(req, res)=>{
+   try {
+        const response = await fetchMovies(req.query);
+        successResponseBody.data = response.data;
+        successResponseBody.message = "Movie(s) found";
+        return res.status(response.statusCode).json(successResponseBody);
+   } catch (error) {
+        errorResponseBody.error = error;
+        errorResponseBody.message = "unable to find movies";
+        return res.status(500).json(errorResponseBody);
+   }
+}
+
 module.exports = {
     createMovie,
     deleteMovie,
     getMovie,
     updateMovie,
+    getMovies,
 };

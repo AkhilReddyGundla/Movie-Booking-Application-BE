@@ -53,9 +53,27 @@ const updateSelectedMovie = async(movieId, content)=>{
     }
 }
 
+
+const fetchMovies = async(filter)=>{
+    try {
+        const movies = await Movie.find(filter);
+        return {
+            data: movies,
+            statusCode: 200,
+        }
+    } catch (error) {
+        return {
+            error,
+            data: "",
+            statusCode: 500,
+        }
+    }
+}
+
 module.exports = {
     createNewMovie,
     getMovieById,
     deleteSingleMovie,
     updateSelectedMovie,
+    fetchMovies,
 }

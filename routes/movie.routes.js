@@ -1,4 +1,4 @@
-const { createMovie, deleteMovie, getMovie, updateMovie } = require("../controllers/movie.controller");
+const { createMovie, deleteMovie, getMovie, updateMovie, getMovies } = require("../controllers/movie.controller");
 const { movieValidater } = require("../middleware/movie.middleware");
 
 const MovieRoutes = (app)=>{
@@ -7,6 +7,7 @@ const MovieRoutes = (app)=>{
     app.get('/mba/api/v1/movies/:movieId', getMovie);
     app.patch('/mba/api/v1/movies/:movieId', updateMovie);
     app.put('/mba/api/v1/movies/:movieId', updateMovie);
+    app.get('/mba/api/v1/movies',getMovies);
 }
 
 
